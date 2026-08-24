@@ -54,7 +54,8 @@ about evidence, never about exploitability, and it never changes severity.
 | Possible typosquat | `expresss@4.18.2` | One edit from `express`, which is on the detector's list of commonly imitated packages. Fires because it is a direct runtime dependency of `demo-signals/package.json`. |
 | Possible typosquat | `exprеss@4.18.2` | Not a duplicate of the row above. The fourth character is a Cyrillic `е`, so this fires through the homoglyph folding branch instead of the edit distance branch. This is the one typosquat variant that fires on a first scan of the default branch, because the folding branch does not require the package to be newly introduced. |
 | Deprecated package version | `request@2.88.2` | deps.dev returns `isDeprecated: true` for this exact version. Verified. |
-| Copyleft license | `qrious@4.0.2` | deps.dev reports GPL-3.0. Verified. A direct runtime dependency of `web`, used by the share page to draw its QR code. |
+| Copyleft license | `qrious@4.0.2` | A direct runtime dependency of `web`, used by the share page to draw its QR code. deps.dev reports GPL-3.0 and GitHub's SBOM reports the license string `GPL-3.0 AND GPL-3.0+`. Both were checked against the live repository, and both match the detector's list. |
+| No license declared | `lodahs`, `expresss`, `exprеss` | GitHub's SBOM carries no license for any of the three, because none of the pinned versions exist in the registry. Expected as a side effect rather than as the headline finding for these rows. |
 | Known vulnerability | 11 packages, 38 advisories | Full list in section F. |
 
 ## D. What this repository cannot show, and why
@@ -77,6 +78,14 @@ firing the moment that changes: `better-sqlite3@9.4.0` is in
 `demo-signals/package-lock.json` with `hasInstallScript: true`, and
 `.github/workflows/ci.yml` references two actions by mutable tag alongside one
 pinned to a full commit SHA as the clean counterexample.
+
+Worth noting for the action case specifically: GitHub's SBOM *does* include the
+workflow actions, and it encodes the difference plainly. The tag references come
+through as `pkg:githubactions/actions/checkout@4.*.*` and the pinned one as
+`pkg:githubactions/actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57`. So
+the information needed to raise this finding is already present on the preferred
+inventory path. Only the flag that carries it is missing, which makes this a
+cheap fix rather than a missing capability.
 
 **Newly published direct dependency cannot be baked in.** That signal only fires
 when the version was published within the last three days, so no committed state
@@ -150,6 +159,22 @@ a Slack alert if the integration is connected. This is the headline demo.
 
 Neither branch should ever be merged. If one gets merged by accident, revert it
 rather than deleting the branch, because the open pull request is the artifact.
+
+## H. Repository settings this depends on
+
+Two settings matter, and one of them is a trap.
+
+**Leave Dependabot alerts enabled.** Turning them off also takes down the
+`/dependency-graph/sbom` endpoint, which returns 404 within seconds and stays
+that way. That endpoint is the inventory source the scan prefers, so disabling
+alerts silently downgrades every scan of this repository to static manifest
+parsing. This was verified the hard way while setting the repository up: alerts
+off gave a 404, alerts back on gave a 216 package SBOM immediately. It is worth
+knowing for real customer repositories too.
+
+**Dependabot automated security updates stay disabled.** They are off. If they
+are ever turned on, they will open pull requests bumping the pins that this whole
+repository depends on.
 
 ## Keeping this file honest
 
