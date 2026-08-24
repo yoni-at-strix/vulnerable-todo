@@ -1,0 +1,27 @@
+{
+  "name": "vulnerable-todo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A small todo app used to exercise supply chain scanners",
+  "workspaces": [
+    "web",
+    "worker"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace web",
+    "import": "npm run import --workspace web",
+    "overdue": "npm run overdue --workspace worker",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/js-yaml": "^3.12.10",
+    "@types/node": "^22.13.1",
+    "@types/semver": "^7.5.8",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@vulnerable-todo/web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "import": "tsx src/cli/import.ts"
+  },
+  "dependencies": {
+    "ejs": "3.1.6",
+    "express": "^4.21.2",
+    "handlebars": "4.0.11",
+    "js-yaml": "3.13.0",
+    "marked": "0.3.6",
+    "qrious": "4.0.2",
+    "request": "2.88.2",
+    "semver": "7.3.5"
+  }
+}

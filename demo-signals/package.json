@@ -1,0 +1,12 @@
+{
+  "name": "demo-signals",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Manifest only. Never install this directory. See README.md.",
+  "dependencies": {
+    "better-sqlite3": "9.4.0",
+    "expresss": "4.18.2",
+    "exprеss": "4.18.2",
+    "lodahs": "4.17.21"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@vulnerable-todo/worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "overdue": "tsx src/overdue.ts"
+  },
+  "dependencies": {
+    "semver": "7.3.5"
+  }
+}

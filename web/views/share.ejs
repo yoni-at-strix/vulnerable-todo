@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= typeof title !== "undefined" ? title : "Shared list" %></title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; }
+    body.dark { background: #111; color: #eee; }
+    ul { padding-left: 20px; }
+    li.done { text-decoration: line-through; opacity: 0.55; }
+    .due { font-size: 12px; opacity: 0.7; margin-left: 6px; }
+    canvas { margin-top: 24px; }
+  </style>
+</head>
+<body class="<%= typeof theme !== "undefined" && theme === "dark" ? "dark" : "" %>">
+  <h1><%= typeof title !== "undefined" ? title : "Shared list" %></h1>
+  <ul>
+    <% todos.forEach(function (todo) { %>
+      <li class="<%= todo.done ? "done" : "" %>">
+        <%= todo.title %>
+        <% if (todo.dueAt) { %><span class="due">due <%= todo.dueAt %></span><% } %>
+      </li>
+    <% }); %>
+  </ul>
+
+  <canvas id="qr"></canvas>
+  <script src="/vendor/qrious.js"></script>
+  <script>
+    new QRious({ element: document.getElementById("qr"), value: <%- JSON.stringify(shareUrl) %>, size: 140 });
+  </script>
+</body>
+</html>
