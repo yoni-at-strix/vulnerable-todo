@@ -29,6 +29,15 @@ app.get("/api/version", (_req, res) => {
   res.json(apiVersion());
 });
 
+app.get("/api/export", (req, res) => {
+  const requestedFile = String(req.query.file ?? "data/todos.json");
+  res.sendFile(resolve(import.meta.dirname, "../../", requestedFile));
+});
+
+app.get("/continue", (req, res) => {
+  res.redirect(String(req.query.next ?? "/"));
+});
+
 // Optional preview endpoint: renders a note through whichever renderer the
 // config file selects.
 app.post("/api/preview", async (req, res) => {

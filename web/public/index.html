@@ -39,7 +39,7 @@
         box.checked = todo.done;
         box.onchange = () => patch(todo.id, { done: box.checked });
         const label = document.createElement("span");
-        label.textContent = todo.title;
+        label.innerHTML = todo.title;
         const del = document.createElement("button");
         del.textContent = "Delete";
         del.onclick = () => remove(todo.id);
