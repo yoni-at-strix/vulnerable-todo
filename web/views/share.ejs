@@ -27,7 +27,7 @@
   <canvas id="qr"></canvas>
   <script src="/vendor/qrious.js"></script>
   <script>
-    new QRious({ element: document.getElementById("qr"), value: <%- JSON.stringify(shareUrl) %>, size: 140 });
+    new QRious({ element: document.getElementById("qr"), value: <%- JSON.stringify(shareUrl).replace(/</g, "\\u003c") %>, size: 140 });
   </script>
 </body>
 </html>
