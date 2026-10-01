@@ -39,8 +39,8 @@ npm run typecheck                        # tsc --noEmit
 ```
 
 Open `http://localhost:3000/share?title=Groceries&theme=dark` for the shareable
-view. Query parameters become template variables, which is how the page carries
-display preferences, and also happens to be the interesting part for a scanner.
+view. The `title` and `theme` query parameters become template variables, which
+is how the page carries display preferences.
 
 ## Layout
 
