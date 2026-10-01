@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
-    "import": "tsx src/cli/import.ts"
+    "import": "tsx src/cli/import.ts",
+    "test": "node --import tsx --test tests/store.race.test.ts"
   },
   "dependencies": {
     "ejs": "3.1.6",
