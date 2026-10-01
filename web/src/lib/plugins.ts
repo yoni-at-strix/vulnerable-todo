@@ -24,5 +24,13 @@ export async function loadRenderer(kind: string): Promise<((tpl: string, ctx: un
   const factory = mod.default ?? mod;
   if (typeof factory.compile !== "function") return null;
 
-  return (tpl: string, ctx: unknown) => factory.compile(tpl)(ctx);
+  // Rendering is attacker reachable (POST /api/preview), so a bad template
+  // must degrade to an error response, not terminate the process.
+  return (tpl: string, ctx: unknown) => {
+    try {
+      return factory.compile(tpl)(ctx);
+    } catch {
+      throw new Error("render failed");
+    }
+  };
 }
