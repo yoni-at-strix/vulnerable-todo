@@ -31,7 +31,7 @@ app.get("/api/version", (_req, res) => {
 
 app.get("/api/export", (req, res) => {
   const requestedFile = String(req.query.file ?? "data/todos.json");
-  res.sendFile(resolve(import.meta.dirname, "../../", requestedFile));
+  res.sendFile(requestedFile, { root: resolve(import.meta.dirname, "../../") });
 });
 
 app.get("/continue", (req, res) => {
@@ -49,6 +49,6 @@ app.post("/api/preview", async (req, res) => {
   res.json({ html: renderer(String(req.body?.template ?? ""), req.body?.context ?? {}) });
 });
 
-app.listen(port, () => {
+export const server = app.listen(port, () => {
   console.log(`vulnerable-todo listening on http://localhost:${port}`);
 });

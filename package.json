@@ -11,6 +11,7 @@
     "dev": "npm run dev --workspace web",
     "import": "npm run import --workspace web",
     "overdue": "npm run overdue --workspace worker",
+    "test": "npm test --workspace web",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
