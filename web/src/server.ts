@@ -46,7 +46,12 @@ app.post("/api/preview", async (req, res) => {
     res.status(400).json({ error: "unknown renderer" });
     return;
   }
-  res.json({ html: renderer(String(req.body?.template ?? ""), req.body?.context ?? {}) });
+  // Untrusted note text must be rendered as DATA inside a fixed
+  // server-side template, never compiled as template source:
+  // attacker-supplied Handlebars templates can walk constructors and
+  // execute arbitrary JavaScript on the server.
+  const previewTemplate = '<div class="note-preview">{{note}}</div>';
+  res.json({ html: renderer(previewTemplate, { note: String(req.body?.template ?? "") }) });
 });
 
 app.listen(port, () => {
