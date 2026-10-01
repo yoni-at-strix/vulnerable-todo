@@ -13,12 +13,17 @@ const SHARE_VIEW = resolve(import.meta.dirname, "../../views/share.ejs");
  * Public read only view of the list, rendered server side so it can be opened
  * from a QR code on a phone with no JavaScript bundle.
  *
- * Query parameters are passed straight through as template locals so a link
- * can carry display preferences, for example ?theme=dark&title=Groceries.
+ * A few query parameters are allowlisted as template locals so a link can
+ * carry display preferences, for example ?theme=dark&title=Groceries. Other
+ * keys never reach the template engine, so request input cannot shape ejs
+ * compile options.
  */
 shareRouter.get("/", (req, res, next) => {
+  const theme = req.query.theme === "dark" ? "dark" : undefined;
+  const title = typeof req.query.title === "string" ? req.query.title : undefined;
   const locals = {
-    ...req.query,
+    title,
+    theme,
     todos: readTodos(),
     shareUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
   };
