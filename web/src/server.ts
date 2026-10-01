@@ -40,13 +40,29 @@ app.get("/continue", (req, res) => {
 
 // Optional preview endpoint: renders a note through whichever renderer the
 // config file selects.
-app.post("/api/preview", async (req, res) => {
-  const renderer = await loadRenderer(String(req.body?.renderer ?? "handlebars"));
-  if (!renderer) {
-    res.status(400).json({ error: "unknown renderer" });
+app.post("/api/preview", async (req, res, next) => {
+  try {
+    const renderer = await loadRenderer(String(req.body?.renderer ?? "handlebars"));
+    if (!renderer) {
+      res.status(400).json({ error: "unknown renderer" });
+      return;
+    }
+    res.json({ html: renderer(String(req.body?.template ?? ""), req.body?.context ?? {}) });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Express's default error handler renders a stack trace page in development;
+// answer errors with a generic JSON body instead.
+app.use((error: Error, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(error);
+  if (res.headersSent) {
+    next(error);
     return;
   }
-  res.json({ html: renderer(String(req.body?.template ?? ""), req.body?.context ?? {}) });
+  const status = (error as { status?: unknown }).status;
+  res.status(typeof status === "number" ? status : 500).json({ error: "internal server error" });
 });
 
 app.listen(port, () => {
