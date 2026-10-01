@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
-    "import": "tsx src/cli/import.ts"
+    "import": "tsx src/cli/import.ts",
+    "test": "tsx --test src/tests/*.test.ts"
   },
   "dependencies": {
     "ejs": "3.1.6",
