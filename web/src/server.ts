@@ -40,13 +40,17 @@ app.get("/continue", (req, res) => {
 
 // Optional preview endpoint: renders a note through whichever renderer the
 // config file selects.
-app.post("/api/preview", async (req, res) => {
-  const renderer = await loadRenderer(String(req.body?.renderer ?? "handlebars"));
-  if (!renderer) {
-    res.status(400).json({ error: "unknown renderer" });
-    return;
+app.post("/api/preview", async (req, res, next) => {
+  try {
+    const renderer = await loadRenderer(String(req.body?.renderer ?? "handlebars"));
+    if (!renderer) {
+      res.status(400).json({ error: "unknown renderer" });
+      return;
+    }
+    res.json({ html: renderer(String(req.body?.template ?? ""), req.body?.context ?? {}) });
+  } catch (error) {
+    next(error);
   }
-  res.json({ html: renderer(String(req.body?.template ?? ""), req.body?.context ?? {}) });
 });
 
 app.listen(port, () => {
