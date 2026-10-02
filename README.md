@@ -36,6 +36,7 @@ Other things you can do:
 npm run import -- lists/groceries.yaml   # bulk import from a YAML file
 npm run overdue                          # print everything past its due date
 npm run typecheck                        # tsc --noEmit
+npm run test                             # node --test, spawns the web app on port 3179
 ```
 
 Open `http://localhost:3000/share?title=Groceries&theme=dark` for the shareable
